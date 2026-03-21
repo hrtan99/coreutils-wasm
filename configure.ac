@@ -866,6 +866,7 @@ m4_include([m4/cu-progs.m4])
 
 if test "$cu_wasi_host" = yes; then
   optional_bin_progs=`printf '%s\n' $optional_bin_progs | sed '/^factor$/d'`
+  optional_bin_progs=`echo $optional_bin_progs`
 fi
 
 # Now that we know which programs will actually be built, determine
