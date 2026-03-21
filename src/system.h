@@ -40,6 +40,50 @@
 # define PATH_MAX 8192
 #endif
 
+#ifndef HAVE_LCHOWN
+# define HAVE_LCHOWN 0
+#endif
+
+#ifndef HAVE_LCHMOD
+# define HAVE_LCHMOD 0
+#endif
+
+#ifndef HAVE_FCHOWNAT
+# define HAVE_FCHOWNAT 0
+#endif
+
+#if defined __wasi__
+static inline uid_t
+geteuid (void)
+{
+  return 1;
+}
+
+static inline uid_t
+getuid (void)
+{
+  return 1;
+}
+
+static inline gid_t
+getegid (void)
+{
+  return 1;
+}
+
+static inline gid_t
+getgid (void)
+{
+  return 1;
+}
+
+static inline mode_t
+umask (mode_t mask)
+{
+  return 0;
+}
+#endif
+
 #include "configmake.h"
 
 #include <sys/time.h>
@@ -75,6 +119,29 @@
 #include <string.h>
 #include <uchar.h>
 #include <errno.h>
+
+#if defined __wasi__
+static inline int
+execvp (const char *file, char *const argv[])
+{
+  errno = ENOSYS;
+  return -1;
+}
+
+static inline int
+kill (pid_t pid, int sig)
+{
+  errno = ENOSYS;
+  return -1;
+}
+
+static inline char *
+ttyname (int fd)
+{
+  errno = ENOTTY;
+  return NULL;
+}
+#endif
 
 /* Some systems don't define this; POSIX mentions it but says it is
    obsolete.  gnulib defines it, but only on native Windows systems,

@@ -90,7 +90,11 @@ noinst_LIBRARIES += src/libver.a
 nodist_src_libver_a_SOURCES = src/version.c src/version.h
 
 # Tell the linker to omit references to unused shared libraries.
+if WASI_HOST
+AM_LDFLAGS =
+else
 AM_LDFLAGS = $(IGNORE_UNUSED_LIBRARIES_CFLAGS)
+endif
 
 # Extra libraries needed by more than one program.  Will be updated later.
 copy_ldadd =
@@ -104,6 +108,10 @@ remove_ldadd =
 # Similarly for $(MBRTOWC_LIB).
 LDADD = src/libver.a lib/libcoreutils.a $(LIBINTL) $(MBRTOWC_LIB) \
   lib/libcoreutils.a
+if WASI_HOST
+LDADD += -lwasi-emulated-signal
+LDADD += -lsetjmp
+endif
 
 # First, list all programs, to make listing per-program libraries easier.
 # See [ below.

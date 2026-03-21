@@ -136,6 +136,14 @@ fi
 AM_CONDITIONAL([SINGLE_BINARY], [test "$gl_single_binary" != no])
 AM_CONDITIONAL([SINGLE_BINARY_HARD], [test "$gl_single_binary" = hardlinks])
 
+# A WASI SDK build is necessarily cross-compiled and lacks enough of a
+# Unix userland to make the normal docs/tests/nls recursion useful.
+cu_wasi_host=no
+case $host in
+  *-wasi* | *-wasip1* | *-wasip2*) cu_wasi_host=yes ;;
+esac
+AM_CONDITIONAL([WASI_HOST], [test "$cu_wasi_host" = yes])
+
 AC_ARG_ENABLE([bold-man-page-references],
   [AS_HELP_STRING([--disable-bold-man-page-references],
      [When generating man pages, or displaying --help, do not apply bold style
@@ -856,6 +864,10 @@ dnl of coreutils programs to be built only upon explicit user request,
 dnl saving that list in the $no_install_progs_default shell variable.
 m4_include([m4/cu-progs.m4])
 
+if test "$cu_wasi_host" = yes; then
+  optional_bin_progs=`printf '%s\n' $optional_bin_progs | sed '/^factor$/d'`
+fi
+
 # Now that we know which programs will actually be built, determine
 # which optional helper progs should be compiled.
 # Note it adding to pkglibexec_PROGRAMS, $(transform) in src/local.mk
@@ -941,6 +953,11 @@ man1_MANS=`echo $man1_MANS`
 EXTRA_MANS=`echo $EXTRA_MANS`
 bin_PROGRAMS=`echo $bin_PROGRAMS`
 pkglibexec_PROGS=`echo $pkglibexec_PROGRAMS`
+
+if test "$cu_wasi_host" = yes; then
+  man1_MANS=
+  EXTRA_MANS=
+fi
 
 AC_SUBST([bin_PROGRAMS])        AM_SUBST_NOTMAKE([bin_PROGRAMS])
 AC_SUBST([pkglibexec_PROGRAMS]) AM_SUBST_NOTMAKE([pkglibexec_PROGRAMS])

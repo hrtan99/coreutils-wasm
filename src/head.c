@@ -296,8 +296,10 @@ elide_tail_bytes_pipe (char const *filename, int fd, uintmax_t n_elide,
      CAUTION: do not fail (out of memory) when asked to elide
      a ridiculous amount, but when given only a small input.  */
 
+# if !defined __wasi__
   static_assert (READ_BUFSIZE <= IDX_MAX);
   static_assert (HEAD_TAIL_PIPE_BYTECOUNT_THRESHOLD <= IDX_MAX - READ_BUFSIZE);
+# endif
   if (n_elide <= HEAD_TAIL_PIPE_BYTECOUNT_THRESHOLD)
     {
       idx_t in_elide = n_elide;

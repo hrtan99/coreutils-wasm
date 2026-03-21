@@ -17,7 +17,14 @@
 
 ALL_RECURSIVE_TARGETS =
 
-SUBDIRS = po . gnulib-tests
+SUBDIRS =
+if !WASI_HOST
+SUBDIRS += po
+endif
+SUBDIRS += .
+if !WASI_HOST
+SUBDIRS += gnulib-tests
+endif
 
 EXTRA_DIST =				\
   .mailmap				\
@@ -208,6 +215,9 @@ CLEANFILES =
 MOSTLYCLEANDIRS =
 
 AM_CPPFLAGS = -Ilib -I$(top_srcdir)/lib -Isrc -I$(top_srcdir)/src
+if WASI_HOST
+AM_CPPFLAGS += -D_WASI_EMULATED_SIGNAL
+endif
 
 include $(top_srcdir)/gl/local.mk
 include $(top_srcdir)/lib/local.mk
