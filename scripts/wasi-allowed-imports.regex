@@ -1,0 +1,40 @@
+# Allowed imports for *.nostdlib.wat, one regex per line.
+# Each import is checked as: <module>:<symbol>
+# Blank lines and lines starting with # are ignored.
+
+# WASI syscalls.
+^wasi_snapshot_preview1:.*$
+
+# Toolchain/compiler helper symbols (keep this broad).
+^env:__.*$
+
+# C/POSIX runtime APIs (curated broad set).
+^env:(abort|_Exit|_exit|exit|atexit)$
+^env:(malloc|calloc|realloc|reallocarray|free|aligned_alloc|posix_memalign)$
+^env:(memcpy|memmove|memset|memcmp|memchr|memrchr|mempcpy)$
+^env:(strlen|strnlen|strcpy|strncpy|strcmp|strncmp|strcoll|strxfrm|strchr|strrchr|strspn|strcspn|strstr|strpbrk|strtok|strtok_r|strdup|strndup)$
+^env:(strerror|strerror_r|strerror_l|strsignal|strerrorname_np)$
+^env:(atoi|atol|atoll|strtol|strtoll|strtoul|strtoull|strtoimax|strtoumax|strtod|strtof|strtold)$
+^env:(is[a-z0-9_]*|to[a-z0-9_]*)$
+^env:(wcslen|wcwidth|wctob|btowc|mbrtowc|wcrtomb|mbsrtowcs|wcsrtombs|mbrlen|mbsinit)$
+^env:(printf|fprintf|sprintf|snprintf|asprintf|vasprintf|vprintf|vfprintf|vsprintf|vsnprintf)$
+^env:(puts|fputs|fputs_unlocked|putchar|putchar_unlocked|fwrite|fwrite_unlocked|fread|fread_unlocked)$
+^env:(fflush|fflush_unlocked|fclose|fopen|fdopen|freopen|fseek|fseeko|ftell|ftello|rewind|fileno|fileno_unlocked)$
+^env:(ferror|ferror_unlocked|feof|clearerr|getc|getc_unlocked|getchar|getchar_unlocked|putc|putc_unlocked|ungetc)$
+^env:(open|openat|close|read|write|pread|pwrite|lseek|dup|dup2|pipe|pipe2|fcntl|ioctl)$
+^env:(stat|fstat|lstat|fstatat|chmod|fchmod|fchmodat|chown|fchown|lchown|fchownat)$
+^env:(link|linkat|unlink|unlinkat|symlink|symlinkat|readlink|readlinkat|rename|renameat|mkdir|mkdirat|rmdir|chdir|fchdir)$
+^env:(opendir|fdopendir|readdir|closedir|rewinddir|scandir|alphasort|dirfd)$
+^env:(access|faccessat|isatty|ttyname|ttyname_r)$
+^env:(socket|connect|bind|listen|accept|accept4|send|sendto|recv|recvfrom|shutdown|getsockopt|setsockopt)$
+^env:(getaddrinfo|freeaddrinfo|getnameinfo|gai_strerror|gethostbyname|getservbyname|inet_ntop|inet_pton)$
+^env:(time|clock|clock_gettime|clock_getres|nanosleep|sleep|usleep|gettimeofday)$
+^env:(localtime|localtime_r|gmtime|gmtime_r|mktime|timegm|strftime|strptime|tzset)$
+^env:(getenv|setenv|unsetenv|putenv|setlocale|localeconv|nl_langinfo|iconv|iconv_open|iconv_close)$
+^env:(uname|getpid|getppid|getuid|geteuid|getgid|getegid|getgroups|getgrouplist|gethostname)$
+^env:(setuid|seteuid|setgid|setegid|setgroups|sethostname|umask)$
+^env:(fork|vfork|execve|execvp|execvpe|posix_spawn|posix_spawnp|wait|waitpid|waitid|kill|raise)$
+^env:(signal|sigaction|sigaltstack|siginterrupt|sigprocmask|pthread_sigmask|sigsuspend)$
+^env:(pthread_.*)$
+^env:(qsort|qsort_r|bsearch|rand|srand|random|srandom)$
+^env:(dlopen|dlsym|dlclose|dlerror)$

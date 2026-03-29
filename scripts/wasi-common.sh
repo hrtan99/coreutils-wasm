@@ -12,6 +12,7 @@ REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 : "${WASI_CC:=$WASI_BIN_DIR/wasm32-wasip1-clang}"
 : "${WASI_AR:=$WASI_BIN_DIR/llvm-ar}"
 : "${WASI_RANLIB:=$WASI_BIN_DIR/llvm-ranlib}"
+: "${WASM_LD_BIN:=$WASI_BIN_DIR/wasm-ld}"
 
 : "${AUTOCONF_BIN:=autoconf}"
 : "${AUTOMAKE_BIN:=automake-1.18}"
@@ -19,6 +20,7 @@ REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 
 : "${WASMER_SH:=/Users/hrtan/.wasmer/wasmer.sh}"
 : "${WASMER_BIN:=/Users/hrtan/.wasmer/bin/wasmer}"
+: "${WASM2WAT_BIN:=/Users/hrtan/Apps/bin/wasm2wat}"
 : "${WASMER_DIR:=/tmp/wasmer7-home}"
 : "${WASMER_CACHE_DIR:=/tmp/wasmer7-cache}"
 
@@ -32,11 +34,13 @@ export WASI_BIN_DIR
 export WASI_CC
 export WASI_AR
 export WASI_RANLIB
+export WASM_LD_BIN
 export AUTOCONF_BIN
 export AUTOMAKE_BIN
 export BISON_BIN
 export WASMER_SH
 export WASMER_BIN
+export WASM2WAT_BIN
 export WASMER_DIR
 export WASMER_CACHE_DIR
 export BUILD_JOBS
